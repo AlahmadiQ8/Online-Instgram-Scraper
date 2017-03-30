@@ -1,10 +1,11 @@
-const express = require('express');
 const path = require('path');
+const http = require('http');
+const express = require('express');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const debug = require('debug')('server');
-const http = require('http');
+const nunjucks = require('nunjucks');
 
 
 const routes = require('./routes/index');
@@ -18,8 +19,11 @@ const app = express();
 // ======================================
 // view engine setup
 //
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+nunjucks.configure(path.join(__dirname, 'views'), {
+    autoescape: true,
+    express: app
+});
+app.set('view engine', 'njk');
 
 
 // ======================================
