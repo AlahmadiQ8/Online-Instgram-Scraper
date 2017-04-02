@@ -8,8 +8,8 @@ const debug = require('debug')('server');
 const nunjucks = require('nunjucks');
 
 
-const routes = require('./routes/index');
-
+const index = require('./routes/index');
+const getData = require('./routes/get-data');
 
 // ======================================
 // start express app
@@ -20,8 +20,8 @@ const app = express();
 // view engine setup
 //
 nunjucks.configure(path.join(__dirname, 'views'), {
-    autoescape: true,
-    express: app
+  autoescape: true,
+  express: app,
 });
 app.set('view engine', 'njk');
 
@@ -46,7 +46,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // ======================================
 // routes
 //
-app.use('/', routes);
+app.use('/', index);
+app.use('/get-data', getData);
 
 
 // ======================================
@@ -129,7 +130,7 @@ function onError(error) {
       process.exit(1);
       break;
     case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
+      console.error(`${bind} is already in use`);
       process.exit(1);
       break;
     default:
@@ -142,10 +143,10 @@ function onError(error) {
  */
 
 function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  const addr = server.address();
+  const bind = typeof addr === 'string'
+    ? `pipe ${addr}`
+    : `port ${addr.port}`;
+  debug(`Listening on ${bind}`);
 }
 

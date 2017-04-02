@@ -5,6 +5,6 @@
   ],
   "rules": {
     "no-use-before-define": ["error", { "functions": false, "classes": true }],
-    "no-console": { "allow": ["warn", "error"] }
+    "no-console": ["error", { "allow": ["warn", "error"] }]
   }
 }
