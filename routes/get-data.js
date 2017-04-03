@@ -24,7 +24,7 @@ router.get('/:user', (req, res) => {
       res.send(instres);
     }).catch((err) => {
       if (err instanceof errors.StatusCodeError) {
-        const message = `failed with ${err.response.statusCode} - ${err.response.statusMessage}`;
+        const message = `${err.response.statusCode} - ${err.response.statusMessage}`;
         res.status(404).render('error', { message });
       }
     });

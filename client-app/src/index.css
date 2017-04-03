@@ -9,5 +9,5 @@ body {
   .jumbotron {
     padding-left: 6rem;
     padding-right: 6rem; } }
-
-/*# sourceMappingURL=main.css.map */
+pre {
+  white-space: normal; }
