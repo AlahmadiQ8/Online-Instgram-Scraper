@@ -1,6 +1,7 @@
-const _ = require('lodash');
+import _ from 'lodash';
 
-const parseItem = item => ({
+
+export const parseItem = item => ({
   link: item.link,
   type: item.type,
   video_views: !_.isNil(item.video_views) ? item.video_views : undefined,
@@ -12,7 +13,4 @@ const parseItem = item => ({
   comments_count: item.comments.count,
 });
 
-const parseItems = items => items.map(item => parseItem(item));
-
-exports.parseItem = parseItem;
-exports.parseItems = parseItems;
+export const parseItems = items => items.map(item => parseItem(item));

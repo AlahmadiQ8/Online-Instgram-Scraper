@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import axios from 'axios'; 
+import classNames from 'classnames';
 
+import { parseItems } from './lib/parser.js';
 
-var foo = "a" + "b";
+import { SearchForm } from './components/SearchForm.jsx';
 
 const Header = ({children}) => (
   <div className="jumbotron text-center">
@@ -10,17 +13,23 @@ const Header = ({children}) => (
     <hr className="my-4"/>
     <p>Only works on public accounts</p>
   </div>
-  );
+);
 
-const Column = ({children, cols}) => (
+const Column = ({children, classes}) => (
   <div className="container">
     <div className="row justify-content-center">
-      <div className={cols || 'col-5'}>
+      <div className={classes || ''}>
         {children}
       </div>
     </div>
   </div>
   );
+
+const Alert = ({message, type}) => (
+  <div className={`alert alert-${type || 'info'}`} role="alert">
+    {message}
+  </div>
+)
 
 class App extends Component {
 
@@ -30,13 +39,29 @@ class App extends Component {
 
   state = {
     output: '',
-    value: ''
+    inputText: '', 
+    loading: false,
+    error: '',
+    status: '',
+    items: []
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault();
-    this.setState({output: this.state.value});
-    this.setState({value: ''});
+    this.setState({loading: true, output: '', error: ''});
+    try {
+      const {data} = await axios.get(`/get-data/${this.state.inputText}`,);
+      const parsed = parseItems(data.items);
+      this.setState({
+          output: JSON.stringify(parsed),
+          inputText: '',
+          loading: false,
+          error: '',
+          items: [...this.state.items, ...parsed]
+      });
+    } catch(err) {
+      this.setState({error: err.message, loading: false});
+    }
   }
 
   render() {
@@ -46,16 +71,19 @@ class App extends Component {
           Instalyzer!
         </Header>
 
-        <Column cols='col-4'>
-          <form onSubmit={this.handleSubmit}>
-            <div className="form-group">
-              <input value={this.state.value} onChange={(e)=>this.setState({value:e.target.value})} type="text" className="form-control" id="searchuser" placeholder="Enter a username"/>
-              <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
-            </div>
-          </form>
+        <Column classes='col-4'>
+          <SearchForm 
+            value={this.state.inputText}
+            handleInputChange={ e =>this.setState({inputText:e.target.value})} 
+            handleSubmit={this.handleSubmit}>
+          Only works on public accounts
+          </SearchForm>
+
+          {this.state.error && <Alert message={this.state.error} type='danger' />}
         </Column>
         
-        <Column cols='col-5'>
+        <Column classes='col-5'>
+          <div className="text-center">{this.state.loading && 'loading'}</div>
           <pre>{this.state.output}</pre>
         </Column>
 
