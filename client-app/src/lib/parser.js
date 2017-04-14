@@ -2,6 +2,7 @@ import _ from 'lodash';
 
 
 export const parseItem = item => ({
+  id: item.id,
   link: item.link,
   type: item.type,
   video_views: !_.isNil(item.video_views) ? item.video_views : undefined,

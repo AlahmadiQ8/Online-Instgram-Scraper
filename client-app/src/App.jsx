@@ -3,6 +3,7 @@ import axios from 'axios';
 import classNames from 'classnames';
 
 import { parseItems } from './lib/parser.js';
+import { getInstaInfo } from './lib/service.js';
 
 import { SearchForm } from './components/SearchForm.jsx';
 
@@ -39,11 +40,19 @@ class App extends Component {
 
   state = {
     output: '',
-    inputText: '', 
+    inputText: '',
     loading: false,
     error: '',
     status: '',
     items: []
+  }
+
+  updateStates = ({items, more}) => {
+    this.setState({
+      output: items.length,
+      loading: more,
+      items: [...this.state.items, ...items]
+    });
   }
 
   handleSubmit = async (e) => {
@@ -72,19 +81,23 @@ class App extends Component {
         </Header>
 
         <Column classes='col-4'>
-          <SearchForm 
+          <SearchForm
             value={this.state.inputText}
             handleInputChange={ e =>this.setState({inputText:e.target.value})} 
             handleSubmit={this.handleSubmit}>
-          Only works on public accounts
+            Only works on public accounts
           </SearchForm>
 
           {this.state.error && <Alert message={this.state.error} type='danger' />}
+          {this.state.loading && <Alert message='loading' type='info'/>}
+
         </Column>
-        
+
         <Column classes='col-5'>
-          <div className="text-center">{this.state.loading && 'loading'}</div>
-          <pre>{this.state.output}</pre>
+
+          {!this.state.loading 
+            && this.state.items.map((item, i) => <p key={i}>{JSON.stringify(item)}</p>)}
+
         </Column>
 
       </div>
