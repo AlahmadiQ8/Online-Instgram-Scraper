@@ -1,15 +1,18 @@
-import axios from 'axios'; 
+import axios from 'axios';
 import { parseItems } from './parser.js';
 
-export const getInstaInfo = async(user, pages, updateStates) => {
-  let res, more = false, query = '', minId;
-  const items = [];
+export const getInstaInfo = async(user, updateStates) => {
+  let res, more = false, query = '', lastItem;
+  let items = [];
   do {
-    res = await axios.get(`/get-data/${this.state.inputText}${query}`);
-    items.concat(parseItems(res.date.items));
+    res = await axios.get(`/get-data/${user}${query}`);
+    items = items.concat(parseItems(res.data.items));
+    if (!items.length && !more) {
+      throw new Error(`User ${user} does not appear to be a public account`);
+    }
     more = res.data.more_available;
-    [minId] = items.slice(-1).id;
-    query = `?max_id=${minId}`;
+    [lastItem] = items.slice(-1);
+    query = `?max_id=${lastItem.id}`;
     updateStates({items, more});
   } while (more);
 }

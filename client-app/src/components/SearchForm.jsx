@@ -3,7 +3,13 @@ import React from 'react';
 export const SearchForm = (props) => (
   <form onSubmit={props.handleSubmit}>
     <div className="form-group">
-      <input value={props.value} onChange={props.handleInputChange} type="text" className="form-control" id="searchuser" placeholder="Enter a username"/>
+      <input value={props.value}
+             onChange={props.handleInputChange}
+             type="text"
+             className="form-control"
+             id="searchuser"
+             placeholder="Enter a username"
+             disabled={props.disabled}/>
       <small id="emailHelp" className="form-text text-muted">{props.children}</small>
     </div>
   </form>

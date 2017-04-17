@@ -11,3 +11,12 @@ body {
     padding-right: 6rem; } }
 pre {
   white-space: normal; }
+
+.list-group-item {
+  padding: 0.25rem .5rem; }
+
+.image-card {
+  flex: 0 1;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  margin-right: 10px; }

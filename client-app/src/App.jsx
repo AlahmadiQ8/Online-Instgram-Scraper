@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import axios from 'axios'; 
+import axios from 'axios';
 import classNames from 'classnames';
 
 import { parseItems } from './lib/parser.js';
 import { getInstaInfo } from './lib/service.js';
 
 import { SearchForm } from './components/SearchForm.jsx';
+import ImageCard from './components/ImageCard.jsx';
 
 const Header = ({children}) => (
   <div className="jumbotron text-center">
@@ -24,22 +25,17 @@ const Column = ({children, classes}) => (
       </div>
     </div>
   </div>
-  );
+);
 
 const Alert = ({message, type}) => (
   <div className={`alert alert-${type || 'info'}`} role="alert">
     {message}
   </div>
-)
+);
 
 class App extends Component {
 
-  constructor() {
-    super()
-  }
-
   state = {
-    output: '',
     inputText: '',
     loading: false,
     error: '',
@@ -49,27 +45,24 @@ class App extends Component {
 
   updateStates = ({items, more}) => {
     this.setState({
-      output: items.length,
+      status: items.length,
       loading: more,
-      items: [...this.state.items, ...items]
+      items: items
     });
   }
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    this.setState({loading: true, output: '', error: ''});
+    this.setState({loading: true, status: '', error: ''});
     try {
-      const {data} = await axios.get(`/get-data/${this.state.inputText}`,);
-      const parsed = parseItems(data.items);
+      await getInstaInfo(this.state.inputText, this.updateStates);
       this.setState({
-          output: JSON.stringify(parsed),
           inputText: '',
-          loading: false,
           error: '',
-          items: [...this.state.items, ...parsed]
+          loading: false,
       });
     } catch(err) {
-      this.setState({error: err.message, loading: false});
+      this.setState({error: err.message, loading: false, status: err.toString()});
     }
   }
 
@@ -83,21 +76,25 @@ class App extends Component {
         <Column classes='col-4'>
           <SearchForm
             value={this.state.inputText}
-            handleInputChange={ e =>this.setState({inputText:e.target.value})} 
-            handleSubmit={this.handleSubmit}>
-            Only works on public accounts
+            handleInputChange={ e =>this.setState({inputText:e.target.value})}
+            handleSubmit={this.handleSubmit}
+            disabled={this.state.loading}>
           </SearchForm>
 
           {this.state.error && <Alert message={this.state.error} type='danger' />}
-          {this.state.loading && <Alert message='loading' type='info'/>}
+          {this.state.loading &&
+            <Alert message={`Loading... ${this.state.status}`} type='info'/>}
 
         </Column>
 
-        <Column classes='col-5'>
-
-          {!this.state.loading 
-            && this.state.items.map((item, i) => <p key={i}>{JSON.stringify(item)}</p>)}
-
+        <Column classes='col-md-11 d-flex flex-wrap justify-content-center'>
+          <ImageCard></ImageCard>
+          <ImageCard></ImageCard>
+          <ImageCard></ImageCard>
+          <ImageCard></ImageCard>
+          <ImageCard></ImageCard>
+          <ImageCard></ImageCard>
+          <ImageCard></ImageCard>
         </Column>
 
       </div>
