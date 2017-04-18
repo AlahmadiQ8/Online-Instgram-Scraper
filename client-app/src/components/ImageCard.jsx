@@ -1,6 +1,9 @@
 
 import React from 'react';
+import moment from 'moment';
 
+
+const parseTime = (epoch) => moment(parseInt(epoch, 10)*1000).fromNow();
 
 const ListItem = (props) => (
   <li className="list-group-item justify-content-between">
@@ -9,14 +12,22 @@ const ListItem = (props) => (
   </li>
 )
 
-export default (props) => (
+export const ImageCard = (props) => {
+
+  return (
   <div className="card image-card">
-    <a href={props.link || '#'}><img className="card-img-top" src={props.img_url || 'http://placehold.it/200x200'} alt="Card image cap"/></a>
+    <a target='_blank' href={props.link || '#'}><img className="card-img-top" src={props.imgUrl || 'http://placehold.it/200x200'} alt=""/></a>
     <ul className="list-group list-group-flush">
-      <ListItem info='Likes' value='123' />
-      <ListItem info='Comments' value='123' />
-      <ListItem info='Views' value='123' />
-      <ListItem info='Posted' value='123' />
+      <ListItem info='Likes' value={props.likesCount} />
+      <ListItem info='Comments' value={props.commentsCount} />
+      {props.videoViews && <ListItem info='Views' value={props.videoViews} />}
+      <ListItem info='Posted' value={parseTime(props.createTime)} />
     </ul>
   </div>
-)
+)}
+
+ImageCard.propTypes = {
+  imgUrl: React.PropTypes.string.isRequired,
+  link: React.PropTypes.string.isRequired,
+  createTime: React.PropTypes.string.isRequired,
+}

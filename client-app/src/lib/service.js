@@ -13,7 +13,7 @@ export const getInstaInfo = async(user, updateStates) => {
     more = res.data.more_available;
     [lastItem] = items.slice(-1);
     query = `?max_id=${lastItem.id}`;
-    updateStates({items, more});
+    updateStates(items, more);
   } while (more);
 }
 
