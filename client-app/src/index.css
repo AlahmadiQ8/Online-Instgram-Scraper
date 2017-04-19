@@ -1,9 +1,15 @@
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; }
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background: #EFEFEF; }
+
+.bg-white {
+  background: #EFEFEF; }
 
 .jumbotron {
   padding-left: 1rem;
-  padding-right: 1rem; }
+  padding-right: 1rem;
+  color: white;
+  background: linear-gradient(180deg, #34D1BF, #08B2E3); }
 
 @media (min-width: 768px) {
   .jumbotron {
@@ -20,3 +26,5 @@ pre {
   margin-bottom: 20px;
   margin-left: 10px;
   margin-right: 10px; }
+
+/*# sourceMappingURL=main.css.map */

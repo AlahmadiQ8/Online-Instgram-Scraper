@@ -9,15 +9,6 @@ import { SearchForm } from './components/SearchForm.jsx';
 import { ImageCard } from './components/ImageCard.jsx';
 import FilterForm from './components/FilterForm.jsx';
 
-const Header = ({children}) => (
-  <div className="jumbotron text-center">
-    <h1 className="display-3">{children}</h1>
-    <p className="lead">Get statistics about your instgram account</p>
-    <hr className="my-4"/>
-    <p>Only works on public accounts</p>
-  </div>
-);
-
 const Column = ({children, classes}) => (
   <div className="container">
     <div className="row justify-content-center">
@@ -99,13 +90,6 @@ class App extends Component {
       this.setState((prevState, props) => ({
         endIndex: prevState.endIndex + this.increment
       }))
-      this.setState({
-        loading: true
-      });
-    } else {
-      this.setState({
-        loading: false
-      });
     }
   }
 
@@ -132,9 +116,6 @@ class App extends Component {
 
     return (
       <div>
-        <Header>
-          Instalyzer!
-        </Header>
 
         <Column classes='col-4'>
           <SearchForm
@@ -145,7 +126,7 @@ class App extends Component {
           </SearchForm>
 
           {this.state.error && <Alert message={this.state.error} type='danger' />}
-          {this.state.items && !this.state.loading
+          {(this.state.items.length !== 0) && !this.state.loading
             && <FilterForm handleFilter={this.handleFilter}></FilterForm>}
         </Column>
 
