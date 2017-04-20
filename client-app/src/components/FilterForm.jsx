@@ -3,7 +3,7 @@ import React from 'react';
 
 export default (props) => (
   <form onChange={props.handleFilter} className=''>
-    <legend>Filter By</legend>
+    <legend>Sort By</legend>
     <div className="form-check form-check-inline">
       <label className="form-check-label">
         <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="likes"/> likes

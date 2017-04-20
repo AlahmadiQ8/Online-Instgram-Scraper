@@ -142,7 +142,7 @@ class App extends Component {
           </SearchForm>
 
           {this.state.error && <Alert message={this.state.error} type='danger' />}
-          {//(this.state.items.length !== 0) && !this.state.loading
+          {(this.state.items.length !== 0) && !this.state.loading &&
             forms}
         </Column>
 
