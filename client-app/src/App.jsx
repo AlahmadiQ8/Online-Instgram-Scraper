@@ -58,28 +58,33 @@ class App extends Component {
           loading: false,
           endIndex: 10
       });
-      console.log(JSON.stringify(this.state.items))
     } catch(err) {
       this.setState({error: err.message, loading: false, status: err.toString()});
     }
   }
 
   handleFilter = (e) => {
-    switch (e.target.value) {
-      case 'comments':
-        this.setState((prevState, props) => {
-          return {items: prevState.items.slice().sort((a, b) => parseInt(b.comments_count) - parseInt(a.comments_count))}
-        })
-        break;
-      case 'likes':
-        this.setState((prevState, props) => {
-          return {items: prevState.items.slice().sort((a, b) => parseInt(b.likes_count) - parseInt(a.likes_count))}
-        })
-        break;
-      default:
-        this.setState((prevState, props) => {
-          return {items: prevState.items.slice().sort((a, b) => parseInt(b.created_time) - parseInt(a.created_time))}
-        })
+    if (e.target.type === 'radio') {
+      switch (e.target.value) {
+        case 'comments':
+          this.setState((prevState, props) => {
+            return {items: prevState.items.slice().sort((a, b) => parseInt(b.comments_count) - parseInt(a.comments_count))}
+          })
+          break;
+        case 'likes':
+          this.setState((prevState, props) => {
+            return {items: prevState.items.slice().sort((a, b) => parseInt(b.likes_count) - parseInt(a.likes_count))}
+          })
+          break;
+        default:
+          this.setState((prevState, props) => {
+            return {items: prevState.items.slice().sort((a, b) => parseInt(b.created_time) - parseInt(a.created_time))}
+          })
+      }
+    } else {
+      this.setState((prevState, props) => {
+        return {items: prevState.items.slice().reverse()}
+      })
     }
   }
 
