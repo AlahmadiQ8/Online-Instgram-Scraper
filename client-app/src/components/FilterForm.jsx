@@ -2,7 +2,7 @@
 import React from 'react';
 
 export default (props) => (
-  <form onChange={props.handleFilter} className='text-center'>
+  <form onChange={props.handleFilter} className=''>
     <legend>Filter By</legend>
     <div className="form-check form-check-inline">
       <label className="form-check-label">

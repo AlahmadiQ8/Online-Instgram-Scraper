@@ -8,6 +8,7 @@ import { getInstaInfo } from './lib/service.js';
 import { SearchForm } from './components/SearchForm.jsx';
 import { ImageCard } from './components/ImageCard.jsx';
 import FilterForm from './components/FilterForm.jsx';
+import ShowJson from './components/ShowJson.jsx';
 
 const Column = ({children, classes}) => (
   <div className="container">
@@ -36,6 +37,7 @@ class App extends Component {
     status: '',
     items: [],
     endIndex: 10,
+    showJson: false
   }
 
   updateStates = (items, more) => {
@@ -56,6 +58,7 @@ class App extends Component {
           loading: false,
           endIndex: 10
       });
+      console.log(JSON.stringify(this.state.items))
     } catch(err) {
       this.setState({error: err.message, loading: false, status: err.toString()});
     }
@@ -78,6 +81,10 @@ class App extends Component {
           return {items: prevState.items.slice().sort((a, b) => parseInt(b.created_time) - parseInt(a.created_time))}
         })
     }
+  }
+
+  handleClickJson = (e) => {
+    this.setState((prevState, props) => ({showJson: !prevState.showJson}));
   }
 
   handleScroll = () => {
@@ -114,10 +121,19 @@ class App extends Component {
       />
     ));
 
+    const forms = (
+      <div>
+        <FilterForm handleFilter={this.handleFilter}></FilterForm>
+        <ShowJson handleClick={this.handleClickJson}
+                  items={this.state.items}
+                  showJson={this.state.showJson}></ShowJson>
+      </div>
+    );
+
     return (
       <div>
 
-        <Column classes='col-4'>
+        <Column classes='col-lg-6 col-md-8 bg-white box-border py-3 px-3 mb-4'>
           <SearchForm
             value={this.state.inputText}
             handleInputChange={ e =>this.setState({inputText:e.target.value})}
@@ -126,8 +142,8 @@ class App extends Component {
           </SearchForm>
 
           {this.state.error && <Alert message={this.state.error} type='danger' />}
-          {(this.state.items.length !== 0) && !this.state.loading
-            && <FilterForm handleFilter={this.handleFilter}></FilterForm>}
+          {//(this.state.items.length !== 0) && !this.state.loading
+            forms}
         </Column>
 
         <Column classes='col-md-12 d-flex flex-wrap justify-content-center'>
