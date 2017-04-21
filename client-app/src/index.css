@@ -70,4 +70,19 @@ pre {
 .json-container:hover #copy {
   display: block; }
 
+.selected-image, .card-img-top:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  opacity: 0.6; }
+
+.image-card:hover .select-image {
+  display: block; }
+
+.select-image {
+  display: none;
+  position: absolute;
+  z-index: 1; }
+
+.display-block {
+  display: block !important; }
+
 /*# sourceMappingURL=main.css.map */

@@ -7,7 +7,7 @@ import { getInstaInfo } from './lib/service.js';
 
 import { SearchForm } from './components/SearchForm.jsx';
 import { ImageCard } from './components/ImageCard.jsx';
-import FilterForm from './components/FilterForm.jsx';
+import SortForm from './components/SortForm.jsx';
 import ShowJson from './components/ShowJson.jsx';
 
 const Column = ({children, classes}) => (
@@ -37,13 +37,17 @@ class App extends Component {
     status: '',
     items: [],
     endIndex: 10,
-    showJson: false
+    showJson: false,
+    selectedIds: {}
   }
 
   updateStates = (items, more) => {
     this.setState({
       status: items.length,
-      items: more ? [] : items
+      items: more ? [] : items,
+      selectedIds: items.reduce((acc, cur) => {
+        return {...acc, [cur.id]: false}}
+        , {})
     });
   }
 
@@ -105,6 +109,14 @@ class App extends Component {
     }
   }
 
+  handleSelect = (id) => {
+    this.setState(prevState => {
+      const updatedIds = {...prevState.selectedIds};
+      updatedIds[id] = !updatedIds[id];
+      return {selectedIds: updatedIds}
+    });
+  }
+
   componentDidMount() {
     window.addEventListener("scroll", this.handleScroll);
   }
@@ -116,6 +128,7 @@ class App extends Component {
   render() {
     const images = this.state.items.slice(0,this.state.endIndex).map((item) => (
       <ImageCard
+        id={item.id}
         key={item.id}
         imgUrl={item.images.low_resolution.url}
         link={item.link}
@@ -123,12 +136,14 @@ class App extends Component {
         createTime={item.created_time}
         commentsCount={item.comments_count}
         videoViews={item.video_views}
+        handleSelect={this.handleSelect}
+        isSelected={this.state.selectedIds[item.id]}
       />
     ));
 
     const forms = (
       <div>
-        <FilterForm handleFilter={this.handleFilter}></FilterForm>
+        <SortForm handleFilter={this.handleFilter}></SortForm>
         <ShowJson handleClick={this.handleClickJson}
                   items={this.state.items}
                   showJson={this.state.showJson}></ShowJson>
