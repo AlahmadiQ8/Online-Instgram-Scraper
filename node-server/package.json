@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "concurrently \"npm run server\" \"cd client-app && npm start\"",
+    "start": "concurrently \"npm run server\" \"cd ../client-app && npm start\"",
     "server": "DEBUG=*,-express:router* nodemon server.js",
     "eslint": "eslint server.js",
     "test": "mocha --require should"

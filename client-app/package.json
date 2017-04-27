@@ -5,7 +5,7 @@
   "dependencies": {
     "axios": "^0.16.0",
     "classnames": "^2.2.5",
-    "eslint": "eslint",
+    "clipboard": "^1.6.1",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "react": "^15.4.2",
