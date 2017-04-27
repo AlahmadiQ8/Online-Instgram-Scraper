@@ -1,0 +1,38 @@
+{% extends 'base.njk' %}
+
+{% block content %}
+
+<div class="jumbotron text-center">
+  <h1 class="display-3">{{ title }}</h1>
+  <p class="lead">Get statistics about your instgram account</p>
+  <hr class="my-4">
+  <p>Only works on public accounts</p>
+</div>
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-4">
+      <div class="form-group">
+        <input type="text" class="form-control" id="searchuser" placeholder="Enter a username">
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-5">
+      <pre>
+Sam[le ;skldfm asdlkfjnasdlkfj nasdlkfj nsd]
+Sam[le ;skldfm asdlkfjnasdlkfj nasdlkfj nsd]sdfsdf
+Sam[le ;skldfm asdlkfjnasdlkfj nasdlkfj nsd]
+Sam[le ;skldfm asdlkfjnasdlkfj nasdlkfj nsd]
+Sam[le ;skldfm asdlkfjnasdlkfj nasdlkfj nsd]sdfsdfsdfsdf
+Sam[le ;skldfm asdlkfjnasdlkfj nasdlkfj nsd]
+Sam[le ;skldfm asdlkfjnasdlkfj nasdlkfj nsd]
+      </pre>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
