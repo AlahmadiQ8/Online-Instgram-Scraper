@@ -85,4 +85,33 @@ pre {
 .display-block {
   display: block !important; }
 
+.DownloadSticky {
+  display: none;
+  position: fixed;
+  top: 40px;
+  left: 40px;
+  z-index: 3;
+  color: #fff;
+  background-image: #D1345B;
+  background-color: #D1345B;
+  border-color: #D1345B; }
+  .DownloadSticky:hover, .DownloadSticky:focus {
+    color: #fff;
+    background-color: #D1345B;
+    border-color: #D1345B;
+    cursor: pointer;
+    box-shadow: none; }
+
+.close-custom {
+  color: #D1345B;
+  float: right;
+  opacity: .5;
+  padding: 0;
+  cursor: pointer;
+  background: 0 0;
+  border: 0; }
+  .close-custom:focus {
+    box-shadow: none;
+    outline: none; }
+
 /*# sourceMappingURL=main.css.map */

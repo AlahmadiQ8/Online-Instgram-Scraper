@@ -9,6 +9,7 @@ import { SearchForm } from './components/SearchForm.jsx';
 import { ImageCard } from './components/ImageCard.jsx';
 import SortForm from './components/SortForm.jsx';
 import ShowJson from './components/ShowJson.jsx';
+import DownloadSticky from './components/DownloadSticky.jsx';
 
 const Column = ({children, classes}) => (
   <div className="container">
@@ -20,8 +21,11 @@ const Column = ({children, classes}) => (
   </div>
 );
 
-const Alert = ({message, type}) => (
-  <div className={`alert alert-${type || 'info'}`} role="alert">
+const Alert = ({message, type, dismiss, dismissHandler}) => (
+  <div className={`alert alert-${type || 'info'}`} role="alert" onClick={dismissHandler}>
+    {dismiss && <button type="button" className="close-custom mt-0 pt-0">
+                  <span>{dismiss}</span>
+                </button>}
     {message}
   </div>
 );
@@ -38,22 +42,27 @@ class App extends Component {
     items: [],
     endIndex: 10,
     showJson: false,
-    selectedIds: {}
+    selectedIds: {},
+    download: [],
+    stopRequest: false
   }
 
   updateStates = (items, more) => {
     this.setState({
       status: items.length,
-      items: more ? [] : items,
+      // items: more ? [] : items,
+      items: items,
       selectedIds: items.reduce((acc, cur) => {
         return {...acc, [cur.id]: false}}
         , {})
     });
+    return this.state.stopRequest;
   }
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    this.setState({loading: true, status: '', error: ''});
+    const stopRequest = false;
+    this.setState({items: [], loading: true, status: '', error: '', download: [], stopRequest: false});
     try {
       await getInstaInfo(this.state.inputText, this.updateStates);
       this.setState({
@@ -67,7 +76,7 @@ class App extends Component {
     }
   }
 
-  handleFilter = (e) => {
+  handleSort = (e) => {
     if (e.target.type === 'radio') {
       switch (e.target.value) {
         case 'comments':
@@ -113,8 +122,20 @@ class App extends Component {
     this.setState(prevState => {
       const updatedIds = {...prevState.selectedIds};
       updatedIds[id] = !updatedIds[id];
-      return {selectedIds: updatedIds}
+      const index = this.state.download.indexOf(id);
+      const download = updatedIds[id]
+        ? [...prevState.download, id]
+        : [
+            ...prevState.download.slice(0, index),
+            ...prevState.download.slice(index+1)
+          ];
+      return {selectedIds: updatedIds, download}
     });
+
+  }
+
+  dismissHandler = (e) => {
+    this.setState({stopRequest: true});
   }
 
   componentDidMount() {
@@ -143,7 +164,7 @@ class App extends Component {
 
     const forms = (
       <div>
-        <SortForm handleFilter={this.handleFilter}></SortForm>
+        <SortForm handleSort={this.handleSort}></SortForm>
         <ShowJson handleClick={this.handleClickJson}
                   items={this.state.items}
                   showJson={this.state.showJson}></ShowJson>
@@ -152,7 +173,7 @@ class App extends Component {
 
     return (
       <div>
-
+        <DownloadSticky downloadLength={this.state.download.length}/>
         <Column classes='col-lg-6 col-md-8 bg-white box-border py-3 px-3 mb-4'>
           <SearchForm
             value={this.state.inputText}
@@ -166,10 +187,17 @@ class App extends Component {
             forms}
         </Column>
 
+        <Column classes='col-md-8'>
+          {this.state.loading
+            && <Alert
+                  dismiss={!this.state.stopRequest && 'Stop'}
+                  message={`Loading... ${this.state.status}`}
+                  type='info'
+                  dismissHandler={this.dismissHandler}
+                />}
+        </Column>
         <Column classes='col-md-12 d-flex flex-wrap justify-content-center'>
           {this.state.items && images}
-          {this.state.loading
-            && <Alert message={`Loading... ${this.state.status}`} type='info'/>}
         </Column>
 
 

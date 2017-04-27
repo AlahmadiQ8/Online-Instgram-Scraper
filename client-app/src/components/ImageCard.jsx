@@ -13,7 +13,6 @@ const ListItem = (props) => (
 )
 
 export const ImageCard = (props) => {
-  console.log(props.isSelected);
   const selectedStext = props.isSelected ? 'Selected' : 'Select';
 
   const classes = classNames('btn', 'btn-sm', 'select-image', 'btn-custom', {'display-block': props.isSelected})
